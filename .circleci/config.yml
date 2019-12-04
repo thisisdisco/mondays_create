@@ -1,0 +1,46 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9.11.1-stretch
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: admin-dependency-cache-{{ checksum "./package.json" }}
+
+      - run:
+          name: Install npm packages
+          command: |
+            npm install
+
+
+      - save_cache:
+          key: admin-dependency-cache-{{ checksum "./package.json" }}
+          paths:
+            - ./node_modules
+
+      - run: 
+          name: Build application
+          command: |
+            npm run build
+
+      - run: 
+          name: Deploy
+          command: |
+            ssh-keyscan $PRODUCTION_SERVER >> ~/.ssh/known_hosts
+            tar czf build.tar.gz build
+            scp build.tar.gz $PRODUCTION_USER@$PRODUCTION_SERVER:/${PATH_TO_SERVER_FILES}
+            ssh -v $PRODUCTION_USER@$PRODUCTION_SERVER "cd ${PATH_TO_SERVER_FILES}; rm -rf ./build; tar xzf build.tar.gz -C ${PATH_TO_SERVER_FILES}; unlink build.tar.gz;" 
+
+
+
+workflows:
+  version: 2
+  Deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
