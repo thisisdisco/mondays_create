@@ -15,12 +15,14 @@ import { CURRENT_USER } from 'core/api/apollo/queries';
 
 // Import routes
 import coreRoutes from 'core/api/routes';
+import marathonRoutes from 'marathon/api/routes';
 import { StoreProvider } from 'core/api/storeContext';
 import NotFound from 'core/ui/pages/NotFound';
 import ErrorOccured from 'core/ui/components/ErrorOccured';
 
 const combinedRoutes = [
   ...coreRoutes,
+  ...marathonRoutes,
 ];
 
 class AppRoot extends PureComponent {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Container } from 'core/ui/atoms';
+import TopMenu from 'core/ui/components/TopMenu';
 
 class AuthenticatedLayout extends PureComponent {
   static propTypes = {
@@ -12,6 +13,7 @@ class AuthenticatedLayout extends PureComponent {
   render() {
     return (
       <Layout>
+        <TopMenu />
         <Content>
           <Container>
             {this.props.children}
@@ -32,5 +34,5 @@ const Layout = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  margin-left: 220px;
+  margin-top: 64px;
 `;

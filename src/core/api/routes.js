@@ -15,6 +15,7 @@ export default [
     path: '/sign-in'
   },
   {
+    exact: true,
     component: Welcome,
     layout: AuthenticatedLayout,
     path: '/'
